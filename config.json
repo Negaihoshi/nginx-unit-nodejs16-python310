@@ -1,0 +1,42 @@
+{
+    "listeners": {
+        "*:80": {
+            "pass": "routes"
+        },
+        "*:8000": {
+            "pass": "applications/fapi"
+        },
+        "*:9000": {
+            "pass": "applications/node"
+        }
+    },
+    "applications": {
+        "fapi": {
+            "type": "python 3.10",
+            "path": "/www/fapi_app/",
+            "home": "/www/fapi_app/venv/",
+            "module": "asgi",
+            "callable": "app"
+        },
+        "node": {
+            "type": "external",
+            "working_directory": "/www/node_app",
+            "executable": "/usr/bin/env",
+            "arguments": [
+                "node",
+                "--loader",
+                "unit-http/loader.mjs",
+                "--require",
+                "unit-http/loader",
+                "server.js"
+            ]
+        }
+    },
+    "routes": [
+        {
+            "action": {
+                "share": "/www/static/$uri"
+            }
+        }
+    ]
+}

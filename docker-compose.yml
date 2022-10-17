@@ -1,0 +1,26 @@
+version: "3.6"
+
+services:
+  unit:
+    build: image/.
+    container_name: unit
+    hostname: unit
+    image: unit:latest
+    networks:
+    - local
+    ports:
+    - 80:80
+    - 9008:8000
+    - 9009:9000
+    restart: unless-stopped
+    volumes:
+    - unit_node_modules:/usr/lib/node_modules
+    - ./test_www:/www
+
+networks:
+  local:
+    external: true
+
+volumes:
+  unit_node_modules:
+    external: true
